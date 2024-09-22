@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flor y Poema</title>
+    <title>Flor</title>
     <style>
         body {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
             margin: 0;
-            font-family: 'Courier New', Courier, monospace;
-            transition: background 1s ease, color 1s ease;
+            font-family: Arial, sans-serif;
+            transition: background 1s ease;
             position: relative;
             overflow: hidden;
-            padding: 20px;
         }
 
         /* Fondo del día */
@@ -26,294 +26,204 @@
         /* Fondo de la noche */
         .night {
             background: linear-gradient(to top, #001d3d, #005f73);
-            color: white;
-        }
-
-        .content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .poem {
-            flex: 1;
-            margin-right: 20px;
-            text-align: center;
-            color: #333;
-            max-width: 500px;
-            font-size: 1.2em;
         }
 
         .flower-container {
-            flex: 1;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 20px 0;
+            animation: rotate 5s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .petal {
             position: absolute;
-            width: 180px;
-            height: 130px;
-            background: radial-gradient(circle, #ffeb3b, #ffca28);
+            width: 100px;
+            height: 50px;
+            background: radial-gradient(circle, #fcd34d, #d1a04d);
             border-radius: 50%;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border: 2px solid #d4af37;
         }
 
-        .petal1 { transform: rotate(0deg); }
-        .petal2 { transform: rotate(72deg); }
-        .petal3 { transform: rotate(144deg); }
-        .petal4 { transform: rotate(216deg); }
-        .petal5 { transform: rotate(288deg); }
+        .petal1 { transform: rotate(0deg) translateX(50px); }
+        .petal2 { transform: rotate(60deg) translateX(50px); }
+        .petal3 { transform: rotate(120deg) translateX(50px); }
+        .petal4 { transform: rotate(180deg) translateX(50px); }
+        .petal5 { transform: rotate(240deg) translateX(50px); }
+        .petal6 { transform: rotate(300deg) translateX(50px); }
 
         .center {
             position: absolute;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, #d4af37, #9c7d2f);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #b88d5c, #7f6b4d);
             border-radius: 50%;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            border: 3px solid #8b6a28;
         }
 
-        .stem {
+        .instruction {
+            margin-bottom: 80px; /* Espacio arriba de la flor */
+            font-size: 22px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            color: #fff;
+            margin-top: 60px; /* Para subir más el texto */
+        }
+
+        /* Ventana emergente */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Animación de la abeja */
+        .bee {
             position: absolute;
-            width: 15px;
-            height: 200px;
-            background-color: #4caf50;
-            border-radius: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 90px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            width: 30px;
+            height: 30px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Bee.png/1024px-Bee.png') no-repeat center;
+            background-size: contain;
+            animation: fly 5s linear infinite;
         }
 
-        .leaf {
-            position: absolute;
-            width: 90px;
-            height: 45px;
-            background: linear-gradient(135deg, #76c38f, #4caf50);
-            border-radius: 22px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: opacity 0.5s;
+        @keyframes fly {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(50px, -50px); }
+            50% { transform: translate(0, 50px); }
+            75% { transform: translate(-50px, -50px); }
+            100% { transform: translate(0, 0); }
         }
 
-        .leaf.left {
-            top: 150px;
-            left: -45px;
-            transform: rotate(20deg);
-        }
-
-        .leaf.right {
-            top: 150px;
-            left: 40px;
-            transform: rotate(-20deg);
-        }
-
-        .button-container {
+        .buttons {
+            margin-top: 100px; /* Aumentar espacio abajo de la flor */
             display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            position: absolute;
-            bottom: 20px;
+            gap: 20px;
         }
 
         .button {
             padding: 10px 20px;
-            margin: 0 5px;
             font-size: 16px;
+            cursor: pointer;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-            color: #fff;
-            outline: none;
+            transition: background 0.3s ease;
         }
 
         .day-button {
-            background-color: #ffc107;
+            background-color: #4caf50;
+            color: white;
         }
 
         .night-button {
-            background-color: #3f51b5;
+            background-color: #2196F3;
+            color: white;
         }
 
-        .sun {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #ffeb3b, #ffc107);
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-            transition: opacity 1s;
-        }
-
-        .moon {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0.7));
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
-            transition: opacity 1s;
-            clip-path: circle(40px at 60px 40px);
-        }
-
-        /* Animación de nubes */
-        .cloud {
-            position: absolute;
-            width: 200px;
-            height: 100px;
-            background: #fff;
-            border-radius: 50%;
-            filter: blur(5px);
-            opacity: 0.7;
-            animation: moveClouds 15s linear infinite;
-        }
-
-        .cloud1 { top: 50px; left: -200px; }
-        .cloud2 { top: 100px; left: -250px; }
-        .cloud3 { top: 150px; left: -300px; }
-
-        @keyframes moveClouds {
-            0% { left: -200px; }
-            100% { left: 110%; }
-        }
-
-        .star {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: yellow;
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
-            animation: twinkle 1s infinite alternate;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        /* Estrellas posicionadas */
-        .star1 { top: 15%; left: 10%; }
-        .star2 { top: 5%; left: 50%; }
-        .star3 { top: 30%; left: 70%; }
-        .star4 { top: 60%; left: 20%; }
-        .star5 { top: 75%; left: 85%; }
-
-        /* Animación de estrellas fugaces */
-        .shooting-star {
-            position: absolute;
-            width: 2px;
-            height: 15px;
-            background: white;
-            opacity: 0;
-            animation: shoot 1s forwards;
-        }
-
-        @keyframes shoot {
-            0% { opacity: 1; transform: translate(0, 0); }
-            100% { opacity: 0; transform: translate(100px, 100px); }
+        .button:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
 <body class="day">
-    <div class="content">
-        <div class="poem">
+    <div class="instruction">¡Presiona la flor!</div>
+    
+    <!-- Flor -->
+    <div class="flower-container" onclick="showPoem()">
+        <div class="petal petal1"></div>
+        <div class="petal petal2"></div>
+        <div class="petal petal3"></div>
+        <div class="petal petal4"></div>
+        <div class="petal petal5"></div>
+        <div class="petal petal6"></div>
+        <div class="center"></div>
+        <div class="bee"></div>
+    </div>
+
+    <!-- Ventana emergente -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
             <p>Querida Katrina,</p>
-            <p>En el cielo azul del día, <br>
-               Tú eres mi sol que siempre brilla. <br>
-               En la noche oscura, bajo la luna,<br>
-               Eres la estrella que siempre perdura.</p>
-            <p>En cada hoja, en cada flor, <br>
-               Vive el recuerdo de tu calor. <br>
-               Nuestra amistad nunca se desvanecerá, <br>
-               Siempre floreciendo en la eternidad.</p>
-            <p>Con cariño eterno, tu amiga.</p>
-        </div>
-        <div class="flower-container">
-            <div class="petal petal1"></div>
-            <div class="petal petal2"></div>
-            <div class="petal petal3"></div>
-            <div class="petal petal4"></div>
-            <div class="petal petal5"></div>
-            <div class="center"></div>
-            <div class="stem"></div>
-            <div class="leaf left"></div>
-            <div class="leaf right"></div>
-            <div class="sun"></div>
-            <div class="moon" style="opacity: 0;"></div>
-            <div class="star star1" style="opacity: 0;"></div>
-            <div class="star star2" style="opacity: 0;"></div>
-            <div class="star star3" style="opacity: 0;"></div>
-            <div class="star star4" style="opacity: 0;"></div>
-            <div class="star star5" style="opacity: 0;"></div>
+            <p>En el cielo claro del día,<br>
+            brillas como el sol en la lejanía.<br>
+            En la noche oscura, bajo la luna,<br>
+            tu luz es la guía que siempre se asuna.</p>
+            <p>Cada hoja, cada flor,<br>
+            refleja el valor de nuestra amistad y honor.<br>
+            En cada paso, juntos avanzamos,<br>
+            en este camino, siempre nos encontramos.</p>
+            <p>Con aprecio sincero, tu amigo Ryan.</p>
         </div>
     </div>
 
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
-    <div class="cloud cloud3"></div>
-
-    <div class="button-container">
+    <!-- Botones -->
+    <div class="buttons">
         <button class="button day-button" onclick="changeToDay()">Día</button>
         <button class="button night-button" onclick="changeToNight()">Noche</button>
     </div>
 
     <script>
         function changeToDay() {
-            document.body.classList.remove('night');
-            document.body.classList.add('day');
-            document.querySelector('.sun').style.opacity = 1;
-            document.querySelector('.moon').style.opacity = 0;
-            document.querySelectorAll('.star').forEach(star => {
-                star.style.opacity = 0;
-            });
-            clearShootingStars();
-            clearClouds();
-            createClouds();
+            document.body.className = "day";
         }
 
         function changeToNight() {
-            document.body.classList.remove('day');
-            document.body.classList.add('night');
-            document.querySelector('.sun').style.opacity = 0;
-            document.querySelector('.moon').style.opacity = 1;
-            document.querySelectorAll('.star').forEach(star => {
-                star.style.opacity = 1;
-            });
-            createShootingStar();
-            clearClouds();
+            document.body.className = "night";
         }
 
-        function createShootingStar() {
-            const shootingStar = document.createElement('div');
-            shootingStar.classList.add('shooting-star');
-            shootingStar.style.top = Math.random() * window.innerHeight + 'px';
-            shootingStar.style.left = Math.random() * window.innerWidth + 'px';
-            document.body.appendChild(shootingStar);
-            setTimeout(() => shootingStar.remove(), 1000);
+        function showPoem() {
+            document.getElementById("myModal").style.display = "block";
         }
 
-        function clearShootingStars() {
-            const shootingStars = document.querySelectorAll('.shooting-star');
-            shootingStars.forEach(star => star.remove());
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
         }
 
-        function createClouds() {
-            document.querySelectorAll('.cloud').forEach(cloud => cloud.style.display = 'block');
-        }
-
-        function clearClouds() {
-            document.querySelectorAll('.cloud').forEach(cloud => cloud.style.display = 'none');
+        // Cerrar el modal cuando se hace clic fuera de él
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("myModal")) {
+                closeModal();
+            }
         }
     </script>
 </body>
